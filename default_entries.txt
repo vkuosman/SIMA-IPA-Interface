@@ -1,0 +1,2 @@
+Insert path to scorer here. It will be saved during testing.
+Insert path to model here. It will be saved during testing.
