@@ -19,6 +19,8 @@ To ensure that IFTTT requests work correctly you will have to setup following IF
 Names of these applets and their functions are subject to change and may need to be updated with future revisions.
 
 Requirements:
+tensorflow,
+deepspeech,
 gtts,
 playsound,
 pyaudio,

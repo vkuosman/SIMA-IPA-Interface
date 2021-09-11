@@ -13,7 +13,7 @@ RATE = 48000
 swidth = 2
 noiseGate = 40
 
-TIMEOUT_LENGTH = 2.5
+TIMEOUT_LENGTH = 1
 
 save_directory = os.path.dirname(os.path.abspath(__file__))
 
