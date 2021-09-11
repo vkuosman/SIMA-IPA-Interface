@@ -8,7 +8,7 @@ At the moment users will be required to provide their own model and scorer, but 
 To ensure that IFTTT requests work correctly you will have to setup following IFTTT applets:
 "LightViolet" > Set the lights to purple,
 "LightGreen" > Set the lights to green,
-LightBlue" > Set the lights to blue,
+"LightBlue" > Set the lights to blue,
 "LightRed" > Set the lights to red,
 "LightRed2" > Set the lights to the fireplace setting,
 "LightOff" > Toggle the lights,
