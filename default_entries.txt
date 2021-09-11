@@ -1,0 +1,3 @@
+Enter the path to your scorer here
+Enter the path to your model here
+Enter your IFTTT key here
