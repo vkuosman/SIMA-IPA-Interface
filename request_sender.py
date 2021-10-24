@@ -1,4 +1,5 @@
 import requests
+import os
 from datetime import datetime, time
 from pygooglenews import GoogleNews
 from selenium import webdriver
@@ -9,15 +10,23 @@ gn = GoogleNews(country = 'UK')
 
 current_time = datetime.now()
 
+location = os.path.dirname(os.path.abspath(__file__))
+
+# Might not be needed in the future. Consider removing if not used anymore.
+infoArray = []
+with open(location + '/default_entries.txt') as infoFile:
+    for line in infoFile:
+        infoArray.append(line)
+
 global_label = " "
 global_input = " "
 global_key = " "
 
-# Setting up Google Webscraping in case of null Wikipedia results.
-url = "https://www.google.com/search?q="
+# Setting up optional search engine webscraping in case of null Wikipedia results.
+original_url = infoArray[3]
 # Possibly change to PhantonJS later
 chrome_browser = webdriver.Chrome()
-chrome_browser.get(url)
+chrome_browser.get(original_url)
 
 def fire():
     requests.post("https://maker.ifttt.com/trigger/LightRed2/with/key/" + global_key)
@@ -107,6 +116,14 @@ def introduction():
     return "Hei vain" + global_input[1] + ". Sima on palveluksessanne."
 
 def search_information():
+    # If this function ends up being the only one to use urls, remove the former infoArray lines.
+    infoArray = []
+    with open(location + '/default_entries.txt') as infoFile:
+        for line in infoFile:
+            infoArray.append(line)
+
+    original_url = infoArray[3]
+
     finn_wiki = wikipediaapi.Wikipedia('fi')
     page_py = finn_wiki.page(global_input[1])
 
@@ -114,14 +131,14 @@ def search_information():
     summary = summary[:summary.rfind('.')]
     # Not an elegant solution. Consider updating in the future.
     if not summary:
-        url = "https://www.google.com/search?q=" + global_input[1]
+        url = original_url + global_input[1]
         chrome_browser.get(url)
         try:
             summary = chrome_browser.find_element_by_xpath('//*[@id="extabar"]/div/div/div[1]/div/div[1]').text.replace("/\n","")
             summary = summary[:summary.rfind('\n')]
             print("case 1")
         except NoSuchElementException:
-            url = "https://www.google.com/search?q=mikä+on+" + global_input[1]
+            url = original_url + "mikä+on+" + global_input[1]
             try:
                 summary = chrome_browser.find_element_by_xpath('//*[@id="rso"]/div[1]/div/div[1]/div[1]/div[1]/div/div[2]/div/div/div/div[1]').text
                 print("case 1.5")

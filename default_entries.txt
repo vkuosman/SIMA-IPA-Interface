@@ -1,3 +1,4 @@
-Enter the path to your scorer here
-Enter the path to your model here
-Enter your IFTTT key here
+Insert path to the scorer here
+Insert path to the model here
+Insert your IFTTT key here
+https://github.com/vkuosman/SIMA-IPA-Interface

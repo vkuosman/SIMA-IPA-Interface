@@ -27,10 +27,10 @@ def s2tFunc():
     os.system("cd " + location)
     os.system(dsCommand)
 
-def saveInfo(string1, string2, string3):
+def saveInfo(string1, string2, string3, string4):
     file = open(location + "/default_entries.txt", "a")
     file.truncate(0)
-    file.write(string1 + "\n" + string2 + "\n" + string3)
+    file.write(string1 + "\n" + string2 + "\n" + string3 + "\n" + string4)
     file.close()
 
 def voiceRecord():
@@ -55,7 +55,7 @@ def speakLine(input_string):
 def onClick():
     print("\nSaving information...\n")
 
-    saveInfo(scorerEntry.get(), modelEntry.get(), dsEntry.get())
+    saveInfo(scorerEntry.get(), modelEntry.get(), iftttEntry.get(), searchEntry.get())
     print("\nStarting recording...\n")
 
     voiceRecord()
@@ -69,19 +69,24 @@ def onClick():
     command = displayIntep(commandLabel)
     root.update()
 
-    t2s_input = sendRequest(command_guess.check_score(command),guessLabel, dsEntry.get())
+    t2s_input = sendRequest(command_guess.check_score(command),guessLabel, iftttEntry.get())
     root.update()
 
     speakLine(t2s_input)
 
+    # Currently outputs are not cleared when an error occurs. Needs updating in the future.
     os.remove(location + '/ds_s2t_output.txt')
     os.remove(location + '/s2t_test_recording.wav')
+    os.remove(location + '/s2t-audio.mp3')
 
     print("\nDONE\n")
 
 # Entry fields
-dsEntry = Entry(root, width=80)
-dsEntry.insert(END, infoArray[2])
+searchEntry = Entry(root, width=80)
+searchEntry.insert(END, infoArray[3])
+
+iftttEntry = Entry(root, width=80)
+iftttEntry.insert(END, infoArray[2][:-1])
 
 scorerEntry = Entry(root, width=80)
 scorerEntry.insert(END, infoArray[0][:-1])
@@ -90,10 +95,11 @@ modelEntry = Entry(root, width=80)
 modelEntry.insert(END, infoArray[1][:-1])
 
 # Title
-finnLabel = Label(root, text="Finnish S2T Testing Interface")
+finnLabel = Label(root, text="SIMA Interface")
 
 # Prompt texts
-dsLabel = Label(root, text="Please enter your IFTTT key to control smart devices: ")
+searchLabel = Label(root, text="You may enter a supported search engine url here (optional): ")
+iftttLabel = Label(root, text="Please enter your IFTTT key to control smart devices: ")
 scorerLabel = Label(root, text="Please select the scorer: ")
 modelLabel = Label(root, text="Please select the model to be tested: ")
 initialLabel = Label(root, text="Recording should end automatically after the user stops speaking. Please wait.")
@@ -115,36 +121,40 @@ testingButton = Button(root, text="Start recording", command=onClick)
 finnLabel.grid(row=0, column=0)
 finnLabel.configure(font=("Helvetica", 16, "bold"))
 
+# Search input field
+searchLabel.grid(row=1, column=0)
+searchEntry.grid(row=2, column=0)
+
 # DS input field
-dsLabel.grid(row=1, column=0)
-dsEntry.grid(row=2, column=0)
+iftttLabel.grid(row=1+2, column=0)
+iftttEntry.grid(row=2+2, column=0)
 
 # Scorer input field
-scorerLabel.grid(row=3, column=0)
-scorerEntry.grid(row=4, column=0)
+scorerLabel.grid(row=3+2, column=0)
+scorerEntry.grid(row=4+2, column=0)
 
 # Model input field
-modelLabel.grid(row=5, column=0)
-modelEntry.grid(row=6, column=0)
+modelLabel.grid(row=5+2, column=0)
+modelEntry.grid(row=6+2, column=0)
 
 # Recording button
-testingButton.grid(row=7, column=0)
+testingButton.grid(row=7+2, column=0)
 
 # Instruction texts
-initialLabel.grid(row=8, column=0)
+initialLabel.grid(row=8+2, column=0)
 
-nullLabel1.grid(row=9, column=0)
+nullLabel1.grid(row=9+2, column=0)
 
 # Interpreted text
-commandLabel.grid(row=10, column=0)
+commandLabel.grid(row=1+20, column=0)
 commandLabel.configure(font=("Helvetica", 12, "italic"))
 
-nullLabel2.grid(row=11, column=0)
+nullLabel2.grid(row=1+21, column=0)
 
 # Estimated command
-guessLabel.grid(row=12, column=0)
+guessLabel.grid(row=1+22, column=0)
 guessLabel.configure(font=("Helvetica", 12))
 
-nullLabel3.grid(row=13, column=0)
+nullLabel3.grid(row=1+23, column=0)
 
 root.mainloop()
